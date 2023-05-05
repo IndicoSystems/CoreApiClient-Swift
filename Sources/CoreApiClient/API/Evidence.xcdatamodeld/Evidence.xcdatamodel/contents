@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21513" systemVersion="22C65" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="CDAccount" representedClassName="CDAccount" syncable="YES" codeGenerationType="class">
+        <attribute name="fullName" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="token" optional="YES" attributeType="String"/>
+        <attribute name="userName" optional="YES" attributeType="String"/>
+        <relationship name="jobs" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Job" inverseName="account" inverseEntity="Job"/>
+        <relationship name="tasks" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDTask" inverseName="account" inverseEntity="CDTask"/>
+    </entity>
+    <entity name="CDExhibit" representedClassName="CDExhibit" syncable="YES" codeGenerationType="class">
+        <attribute name="archived" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="captureStartedAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="duration" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="events" optional="YES" attributeType="String"/>
+        <attribute name="fileSize" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="gpsAltitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="gpsArea1" optional="YES" attributeType="String"/>
+        <attribute name="gpsArea2" optional="YES" attributeType="String"/>
+        <attribute name="gpsArea3" optional="YES" attributeType="String"/>
+        <attribute name="gpsArea4" optional="YES" attributeType="String"/>
+        <attribute name="gpsCountry" optional="YES" attributeType="String"/>
+        <attribute name="gpsFullAddress" optional="YES" attributeType="String"/>
+        <attribute name="gpsHorizontalAccuracy" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="gpsLatitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="gpsLongitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="gpsPostalCode" optional="YES" attributeType="String"/>
+        <attribute name="gpsStreetAddress" optional="YES" attributeType="String"/>
+        <attribute name="gpsVerticalAccuracy" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="localChecksum" optional="YES" attributeType="String"/>
+        <attribute name="localChecksumType" optional="YES" attributeType="String"/>
+        <attribute name="recognizedText" optional="YES" attributeType="String"/>
+        <attribute name="status" optional="YES" attributeType="String"/>
+        <attribute name="taskFieldId" optional="YES" attributeType="String"/>
+        <attribute name="type" optional="YES" attributeType="String"/>
+        <attribute name="uploadedAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="uploadKey" optional="YES" attributeType="String"/>
+        <relationship name="metas" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDMeta" inverseName="exhibit" inverseEntity="CDMeta"/>
+        <relationship name="task" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDTask" inverseName="exhibits" inverseEntity="CDTask"/>
+    </entity>
+    <entity name="CDMeta" representedClassName="CDMeta" syncable="YES" codeGenerationType="class">
+        <attribute name="angle" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="censor" optional="YES" attributeType="String"/>
+        <attribute name="censorValue" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="centerX" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="centerY" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="confidence" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="content" optional="YES" attributeType="String"/>
+        <attribute name="details" optional="YES" attributeType="String"/>
+        <attribute name="fromTime" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" customClassName="MetaBookmark"/>
+        <attribute name="height" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="relevance" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="shape" optional="YES" attributeType="String"/>
+        <attribute name="tags" optional="YES" attributeType="String"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <attribute name="toTime" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="type" optional="YES" attributeType="String"/>
+        <attribute name="width" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <relationship name="exhibit" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDExhibit" inverseName="metas" inverseEntity="CDExhibit"/>
+    </entity>
+    <entity name="CDTask" representedClassName="CDTask" syncable="YES" codeGenerationType="class">
+        <attribute name="changed" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="created" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="form" optional="YES" attributeType="String"/>
+        <attribute name="formSubmitted" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="template" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="userSubmitted" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDAccount" inverseName="tasks" inverseEntity="CDAccount"/>
+        <relationship name="exhibits" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDExhibit" inverseName="task" inverseEntity="CDExhibit"/>
+    </entity>
+    <entity name="Job" representedClassName=".Job" syncable="YES" codeGenerationType="class">
+        <attribute name="error" optional="YES" attributeType="String"/>
+        <attribute name="status" optional="YES" attributeType="String"/>
+        <attribute name="target" optional="YES" attributeType="String"/>
+        <attribute name="time" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="type" optional="YES" attributeType="String"/>
+        <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDAccount" inverseName="jobs" inverseEntity="CDAccount"/>
+    </entity>
+    <entity name="Log" representedClassName=".Log" syncable="YES" codeGenerationType="class">
+        <attribute name="body" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="isSynced" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+    </entity>
+</model>
