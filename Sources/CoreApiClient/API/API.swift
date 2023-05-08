@@ -108,8 +108,8 @@ struct RegisterDeviceInput: FT4Input {
     let action = "register_user_device"
     let deviceId = UDStr(UserDefaultsKey.deviceId)
     let type = "capture_ios"
-    let model = settings.getDeviceModel()
-    let description = settings.getDeviceInfo()
+    let model = getDeviceModel()
+    let description = getDeviceInfo()
     let locale = Locale.preferredLanguages.first
     var identifier: String = UDStr(UserDefaultsKey.deviceToken)
     let appVersion = "\(Bundle.main.infoDictionary?["CFBundleShortVersionString"] ?? "-")"

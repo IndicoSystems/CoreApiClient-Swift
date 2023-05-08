@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>iPhone8,1</key>
+	<string>iPhone 6s</string>
+	<key>iPhone8,2</key>
+	<string>iPhone 6s Plus</string>
+	<key>iPhone9,1</key>
+	<string>iPhone 7</string>
+	<key>iPhone9,3</key>
+	<string>iPhone 7</string>
+	<key>iPhone9,2</key>
+	<string>iPhone 7 Plus</string>
+	<key>iPhone9,4</key>
+	<string>iPhone 7 Plus</string>
+	<key>iPhone10,1</key>
+	<string>iPhone 8</string>
+	<key>iPhone10,4</key>
+	<string>iPhone 8</string>
+	<key>iPhone10,2</key>
+	<string>iPhone 8 Plus</string>
+	<key>iPhone10,5</key>
+	<string>iPhone 8 Plus</string>
+	<key>iPhone10,3</key>
+	<string>iPhone X</string>
+	<key>iPhone10,6</key>
+	<string>iPhone X</string>
+	<key>iPhone11,2</key>
+	<string>iPhone XS</string>
+	<key>iPhone11,4</key>
+	<string>iPhone XS Max</string>
+	<key>iPhone11,6</key>
+	<string>iPhone XS Max</string>
+	<key>iPhone11,8</key>
+	<string>iPhone XR</string>
+	<key>iPhone12,1</key>
+	<string>iPhone 11</string>
+	<key>iPhone12,3</key>
+	<string>iPhone 11 Pro</string>
+	<key>iPhone12,5</key>
+	<string>iPhone 11 Pro Max</string>
+	<key>iPhone13,1</key>
+	<string>iPhone 12 Mini</string>
+	<key>iPhone13,2</key>
+	<string>iPhone 12</string>
+	<key>iPhone13,3</key>
+	<string>iPhone 12 Pro</string>
+	<key>iPhone13,4</key>
+	<string>iPhone 12 Pro Max</string>
+	<key>iPhone14,4</key>
+	<string>iPhone 13 Mini</string>
+	<key>iPhone14,5</key>
+	<string>iPhone 13</string>
+	<key>iPhone14,2</key>
+	<string>iPhone 13 Pro</string>
+	<key>iPhone14,3</key>
+	<string>iPhone 13 Pro Max</string>
+	<key>iPhone14,7</key>
+	<string>iPhone 14</string>
+	<key>iPhone14,8</key>
+	<string>iPhone 14 Plus</string>
+	<key>iPhone15,2</key>
+	<string>iPhone 14 Pro</string>
+	<key>iPhone15,3</key>
+	<string>iPhone 14 Pro Max</string>
+	<key>iPhone8,4</key>
+	<string>iPhone SE</string>
+	<key>iPhone12,8</key>
+	<string>iPhone SE 2nd gen.</string>
+	<key>iPhone14,6</key>
+	<string>iPhone SE 3rd gen.</string>
+</dict>
+</plist>

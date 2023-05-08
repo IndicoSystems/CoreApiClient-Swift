@@ -1,5 +1,13 @@
 import Foundation
 
+enum AuthMode: String {
+    case local
+    case ad
+    case azure = "azure_ad"
+    case anonymousReq = "azure_ad_anonymous_req"
+    case anonymous = "azure_ad_anonymous"
+}
+
 class FT4Client {
     
     enum CloudClientError: LocalizedError {
