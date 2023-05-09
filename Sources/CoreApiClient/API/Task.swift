@@ -1,5 +1,6 @@
 import CoreLocation
 
+@available(iOS 13.0, *)
 class Task {
     init(inAccount: Account, withForm: FT4Task? = nil, fromCDTask: CDTask? = nil) {
         cdTask = fromCDTask
@@ -185,38 +186,40 @@ class Task {
     }
     
     var readyForSubmitTask: String? {
-        if !serverAvailable { return "Server unavailable" }
+        #warning("Cannot find 'serverAvailable, worker' in scope")
+        //if !serverAvailable { return "Server unavailable" }
         return nil
     }
     
     func submitTask(job: Job) {
         var complete = cdTask?.userSubmitted != nil
-        
-        if !hasIncompleteTasks {
-            form?.completed = true
-            complete = true
-        }
-        
-        AppState.shared.server.submitTask(account: job.account, task: self) { ft4Response in
-            if ft4Response.statusCode == 200 {
-                DispatchQueue.main.async {
-                    if complete {
-                        self.cdTask?.formSubmitted = Date()
-                        cdSaveContext()
-                    }
-                    worker.completeJobs(ofType: .submitTask, forTarget: self.id)
-                    NotificationCenter.default.post(name: .doGetTasks, object: nil)
-                }
-            } else {
-                print(ft4Response.statusCode)
-                worker.fail(job, error: String(ft4Response.statusCode))
-            }
-        } failure: { ft4Error in
-            worker.fail(job, error: ft4Error.error)
-        }
+        #warning("Cannot find 'hasIncompleteTasks, worker' in scope")
+//        if !hasIncompleteTasks {
+//            form?.completed = true
+//            complete = true
+//        }
+//
+//        AppState.shared.server.submitTask(account: job.account, task: self) { ft4Response in
+//            if ft4Response.statusCode == 200 {
+//                DispatchQueue.main.async {
+//                    if complete {
+//                        self.cdTask?.formSubmitted = Date()
+//                        cdSaveContext()
+//                    }
+//                    worker.completeJobs(ofType: .submitTask, forTarget: self.id)
+//                    NotificationCenter.default.post(name: .doGetTasks, object: nil)
+//                }
+//            } else {
+//                print(ft4Response.statusCode)
+//                worker.fail(job, error: String(ft4Response.statusCode))
+//            }
+//        } failure: { ft4Error in
+//            worker.fail(job, error: ft4Error.error)
+//        }
     }
 }
 
+@available(iOS 13.0, *)
 extension Task: Hashable {
     static func == (lhs: Task, rhs: Task) -> Bool {
         return lhs.id == rhs.id

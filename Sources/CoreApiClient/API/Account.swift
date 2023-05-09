@@ -1,6 +1,7 @@
 import UIKit
 import CoreData
 
+@available(iOS 13.0, *)
 class Account {
     var cdAccount: CDAccount?
     var tasks = [Task]()
@@ -40,12 +41,12 @@ class Account {
     }
     
     func deleteTask(_ task: Task) {
-        
-        task.exhibits.forEach { exhibit in
-            if !worker.jobs(forIDs: [exhibit.id]).isEmpty { return }
-        }
-        
-        if !worker.jobs(forIDs: [task.id]).isEmpty { return }
+        #warning("Cannot find 'worker' in scope")
+//        task.exhibits.forEach { exhibit in
+//            if !worker.jobs(forIDs: [exhibit.id]).isEmpty { return }
+//        }
+//
+//        if !worker.jobs(forIDs: [task.id]).isEmpty { return }
         
         task.exhibits.forEach { exhibit in
             task.deleteExhibit(exhibit, reason: "Task has been removed")
@@ -57,7 +58,8 @@ class Account {
     }
     
     func deleteExhibitsWithNoMedia() {
-        if isRecording || capturingPhoto { return }
+        #warning("Cannot find 'isRecording || capturingPhoto' in scope")
+        //if isRecording || capturingPhoto { return }
         for task in tasks {
             task.exhibits.filter{$0.uploadedAt==nil && !$0.isLocal && !fileMgr.fileExists(atPath: $0.localURL.path+".caf") && !fileMgr.fileExists(atPath: $0.localURL.path+"."+videoFileExt)}.forEach {
                 task.deleteExhibit($0, reason: "")
@@ -73,7 +75,9 @@ class Account {
         
         deleteExhibitsPastRetention()
         
-        while safeSpace == 0 {
+        #warning("Cannot find 'safeSpace' in scope")
+        //while safeSpace == 0 {
+        while true {
             if let exhibitToDelete = (accounts.flatMap({$0.tasks}).flatMap{ $0.exhibits }.filter{ $0.cdExhibit!.status == "safe_to_delete" && $0.isLocal }).sorted(by: { $0.captureStartedAt! < $1.captureStartedAt! }).first {
                 try? fileMgr.removeItem(at: exhibitToDelete.localURL)
                 if exhibitToDelete.isLocal { break }
@@ -87,11 +91,20 @@ class Account {
     
     private func deleteExhibitsPastRetention() {
         guard let activeAccount = activeAccount else { return }
-        let retentionDays = Settings.shared.retentionHours
+        #warning("Cannot find 'Settings' in scope")
+        let retentionDays = 24 * 30 //Settings.shared.retentionHours
         let retentionSeconds = retentionDays * 60 * 60
         
         let completedTasks = activeAccount.tasks.filter({ $0.cdTask?.userSubmitted != nil })
-        let cullableTasks = completedTasks.filter({ Date() > $0.cdTask!.userSubmitted!.advanced(by: TimeInterval(retentionSeconds)) })
+        
+        #warning("'advanced(by:)' is only available in iOS 13.0 or newer")
+        let cullableTasks = completedTasks.filter({
+            if #available(iOS 13.0, *) {
+                return Date() > $0.cdTask!.userSubmitted!.advanced(by: TimeInterval(retentionSeconds))
+            } else {
+                return Date() > $0.cdTask!.userSubmitted! + TimeInterval(retentionSeconds)
+            }
+        })
         
         let exhibitsToBeDeleted = cullableTasks
             .flatMap({$0.exhibits})
@@ -103,26 +116,26 @@ class Account {
     }
     
     func getExhibitStatus() {
-        
-        guard serverAvailable else { return }
+        #warning("Cannot find 'serverAvailable' in scope")
+        //guard serverAvailable else { return }
         
         let allExhibits = accounts.flatMap({$0.tasks}).flatMap{ $0.exhibits }.filter{ $0.cdExhibit!.status != "safe_to_delete" && $0.isLocal }
         
         if allExhibits.isEmpty { return }
-        
-        AppState.shared.server.getExhibitStatus(exhibits: allExhibits) { response in
-            let dict = try! JSONSerialization.jsonObject(with: response.body, options: .allowFragments) as! [String : String]
-            
-            let exhibits = exhibitsFromIDs(Array(dict.keys))
-            
-            DispatchQueue.main.async {
-                
-                for exhibit in exhibits {
-                    exhibit.cdExhibit!.status = dict[exhibit.id]!
-                }
-                cdSaveContext()
-            }
-        }
+        #warning("Cannot find 'AppState' in scope")
+//        AppState.shared.server.getExhibitStatus(exhibits: allExhibits) { response in
+//            let dict = try! JSONSerialization.jsonObject(with: response.body, options: .allowFragments) as! [String : String]
+//
+//            let exhibits = exhibitsFromIDs(Array(dict.keys))
+//
+//            DispatchQueue.main.async {
+//
+//                for exhibit in exhibits {
+//                    exhibit.cdExhibit!.status = dict[exhibit.id]!
+//                }
+//                cdSaveContext()
+//            }
+//        }
     }
     
     func doMaintenance() {
@@ -133,16 +146,17 @@ class Account {
             setUD(UserDefaultsKey.lastCullMedia, to: now)
         }
         
-        if syncLoopClk % 20 == 2 { deleteExhibitsWithNoMedia() }
-        if syncLoopClk % 20 == 8 { setIconBadge() }
-        
-        if syncLoopClk >= nextJobTime {
-            nextJobTime = syncLoopClk + 10
-            worker.nextJob()
-        }
-        
-        if syncLoopClk % 25 == 15 {
-            getExhibitStatus()            
-        }
+        #warning("Cannot find 'syncLoopClk, setIconBadge, nextJobTime, worker' in scope")
+//        if syncLoopClk % 20 == 2 { deleteExhibitsWithNoMedia() }
+//        if syncLoopClk % 20 == 8 { setIconBadge() }
+//
+//        if syncLoopClk >= nextJobTime {
+//            nextJobTime = syncLoopClk + 10
+//            worker.nextJob()
+//        }
+//
+//        if syncLoopClk % 25 == 15 {
+//            getExhibitStatus()
+//        }
     }
 }

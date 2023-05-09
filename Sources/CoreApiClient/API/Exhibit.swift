@@ -4,6 +4,7 @@ import UIKit
 import CryptoKit
 import Contacts
 
+@available(iOS 13.0, *)
 class Exhibit: NSObject {
     
     var cdExhibit: CDExhibit?
@@ -74,20 +75,21 @@ class Exhibit: NSObject {
     var place: String? { cdExhibit?.gpsArea2 ?? cdExhibit?.gpsArea1 ?? cdExhibit?.gpsArea3 ?? cdExhibit?.gpsArea4 }
     
     func setCurrentLocation() {
-        if let loc = locationProvider.lastLocation {
-            cdExhibit?.gpsLatitude           = loc.coordinate.latitude
-            cdExhibit?.gpsLongitude          = loc.coordinate.longitude
-            cdExhibit?.gpsHorizontalAccuracy = loc.horizontalAccuracy
-            cdExhibit?.gpsVerticalAccuracy   = loc.verticalAccuracy
-            cdExhibit?.gpsAltitude           = loc.altitude
-            
-            if allowsReverseGeocoding {
-                worker.add(.lookUpAddress, target: id)
-            } else {
-                worker.add(.setEvent, target: id)
-                NotificationCenter.default.post(name: .didChangeExhibit, object: self)
-            }
-        }
+        #warning("Cannot find 'locationProvider, allowsReverseGeocoding, worker' in scope")
+//        if let loc = locationProvider.lastLocation {
+//            cdExhibit?.gpsLatitude           = loc.coordinate.latitude
+//            cdExhibit?.gpsLongitude          = loc.coordinate.longitude
+//            cdExhibit?.gpsHorizontalAccuracy = loc.horizontalAccuracy
+//            cdExhibit?.gpsVerticalAccuracy   = loc.verticalAccuracy
+//            cdExhibit?.gpsAltitude           = loc.altitude
+//
+//            if allowsReverseGeocoding {
+//                worker.add(.lookUpAddress, target: id)
+//            } else {
+//                worker.add(.setEvent, target: id)
+//                NotificationCenter.default.post(name: .didChangeExhibit, object: self)
+//            }
+//        }
     }
 
     init(inTask: Task, ofType: ExhibitType? = nil, fromCDExhibit: CDExhibit? = nil, ft4Task: FT4Task? = nil, inTaskField: String? = nil) {
@@ -105,8 +107,8 @@ class Exhibit: NSObject {
             cdExhibit?.captureStartedAt = Date()
             cdSaveContext()
             inTask.changed = cdExhibit!.captureStartedAt!
-            worker.add(.submitTask, target: inTask.id)
-            
+            #warning("Cannot find 'worker' in scope")
+//            worker.add(.submitTask, target: inTask.id)
         }
         
         if inTaskField != nil {
@@ -281,7 +283,8 @@ class Exhibit: NSObject {
             }
             
             if includeMarks {
-                g.setStrokeColor(colYellow.cgColor)
+                #warning("Cannot find 'colYellow' in scope")
+                //g.setStrokeColor(colYellow.cgColor)
                 g.setLineWidth(2)
                 let rawEvents = self.events.components(separatedBy: ";")
                 
@@ -384,7 +387,8 @@ class Exhibit: NSObject {
             if fileSize==0 {
                 logft4(level: .tech_support, category: .error, initiator: job.account?.id, action: "finalize_exhibit", subaction: "empty_temp_file", target: id, targetType: "exhibit", details: createReport())
                 try? fileMgr.removeItem(atPath: localURL.path+"."+tmpExtension)
-                worker.complete(job)
+                #warning("Cannot find 'worker' in scope")
+//                worker.complete(job)
             } else {
                 do {
                     try fileMgr.moveItem(at: localURL.appendingPathExtension(tmpExtension), to: localURL)
@@ -393,16 +397,18 @@ class Exhibit: NSObject {
                     if duration == 0 {
                         logft4(level: .tech_support, category: .error, initiator: job.account?.id, action: "finalize_exhibit", subaction: "duration_is_0", target: id, targetType: "exhibit", details: createReport())
                     }
-                    worker.add(.uploadExhibit, target: id, account: job.account)
-                    worker.add(.createChecksum, target: id, account: job.account)
-                    worker.add(.verifyExhibit, target: id, account: job.account)
-                    worker.complete(job)
-                    NotificationCenter.default.post(name: .didChangeExhibit, object: self)
+                    #warning("Cannot find 'worker, didChangeExhibit' in scope")
+//                    worker.add(.uploadExhibit, target: id, account: job.account)
+//                    worker.add(.createChecksum, target: id, account: job.account)
+//                    worker.add(.verifyExhibit, target: id, account: job.account)
+//                    worker.complete(job)
+//                    NotificationCenter.default.post(name: .didChangeExhibit, object: self)
                 } catch {
                     var exhibitReport = createReport()
                     exhibitReport["error"] = error.localizedDescription
                     logft4(level: .tech_support, category: .error, initiator: job.account?.id, action: "finalize_exhibit", subaction: "rename_temp_file", target: id, targetType: "exhibit", details: exhibitReport)
-                    worker.fail(job, error: "Error finalizing video")
+                    #warning("Cannot find 'worker' in scope")
+//                    worker.fail(job, error: "Error finalizing video")
                 }
             }
         } else if type == .audio {
@@ -410,7 +416,8 @@ class Exhibit: NSObject {
             if totAudLen<=0 {
                 logft4(level: .tech_support, category: .error, initiator: job.account?.id, action: "finalize_exhibit", subaction: "delete_empty_audio", target: id, targetType: "exhibit", details: createReport())
                 try? fileMgr.removeItem(atPath: localURL.path+".caf")
-                worker.complete(job)
+                #warning("Cannot find 'worker' in scope")
+//                worker.complete(job)
                 return
             }
             
@@ -436,18 +443,20 @@ class Exhibit: NSObject {
                             
                             if self.duration>0 && self.fileSize>0 {
                                 try fileMgr.removeItem(atPath: self.localURL.path+".caf")
-                                
-                                worker.add(.uploadExhibit, target: self.id, account: job.account)
-                                worker.add(.createChecksum, target: self.id, account: job.account)
-                                worker.add(.verifyExhibit, target: self.id, account: job.account)
-                                worker.complete(job)
-                                NotificationCenter.default.post(name: .didChangeExhibit, object: self)
+                                  
+                                  #warning("Cannot find 'worker' in scope")
+//                                worker.add(.uploadExhibit, target: self.id, account: job.account)
+//                                worker.add(.createChecksum, target: self.id, account: job.account)
+//                                worker.add(.verifyExhibit, target: self.id, account: job.account)
+//                                worker.complete(job)
+//                                NotificationCenter.default.post(name: .didChangeExhibit, object: self)
                             }
                         } catch {
                             var exhibitReport = self.createReport()
                             exhibitReport["error"] = error.localizedDescription
                             logft4(level: .tech_support, category: .error, initiator: job.account?.id, action: "finalize_exhibit", subaction: "rename_temp_file", target: self.id, targetType: "exhibit", details: exhibitReport)
-                            worker.fail(job, error: "Error finalizing audio")
+                            #warning("Cannot find 'worker' in scope")
+//                            worker.fail(job, error: "Error finalizing audio")
                         }
                     }
                 } else if exportSession!.status == .failed {
@@ -455,7 +464,8 @@ class Exhibit: NSObject {
                         var exhibitReport = self.createReport()
                         exhibitReport["error"] = exportSession?.error?.localizedDescription ?? ""
                         logft4(level: .tech_support, category: .error, initiator: job.account?.id, action: "finalize_exhibit", subaction: "export_audio", target: self.id, targetType: "exhibit", details: exhibitReport)
-                        worker.fail(job, error: "Error finalizing audio")
+                        #warning("Cannot find 'worker' in scope")
+//                        worker.fail(job, error: "Error finalizing audio")
                     }
                 }
             }
@@ -469,25 +479,26 @@ class Exhibit: NSObject {
 
     func createChecksum(job: Job) {
         DispatchQueue.global(qos: .background).async {
-            var hasher = SHA256.init()
-            let stream = InputStream(fileAtPath: self.localURL.path)!
-            stream.open()
-            let bufferSize = 8192
-            let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: bufferSize)
-            while stream.hasBytesAvailable {
-                let read = stream.read(buffer, maxLength: bufferSize)
-                let bufferPointer = UnsafeRawBufferPointer(start: buffer, count: read)
-                hasher.update(bufferPointer: bufferPointer)
-            }
-            let hash = hasher.finalize().map { String(format: "%02hhx", $0) }.joined()
-            DispatchQueue.main.async {
-                self.cdExhibit?.localChecksum = hash
-                self.cdExhibit?.localChecksumType = "SHA_256"
-                cdSaveContext()
-                worker.add(.updateExhibit, target: self.id, account: job.account)
-                worker.complete(job)
-                logft4(level: .custody_minor, category: .change, initiator: job.account?.id, action: LogAction.verify.rawValue, subaction: "file_hashed", target: self.id, targetType: "exhibit", details: ["type":"sha256", "hash":hash])
-            }
+            #warning("Cannot find 'SHA256' in scope")
+//            var hasher = SHA256.init()
+//            let stream = InputStream(fileAtPath: self.localURL.path)!
+//            stream.open()
+//            let bufferSize = 8192
+//            let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: bufferSize)
+//            while stream.hasBytesAvailable {
+//                let read = stream.read(buffer, maxLength: bufferSize)
+//                let bufferPointer = UnsafeRawBufferPointer(start: buffer, count: read)
+//                hasher.update(bufferPointer: bufferPointer)
+//            }
+//            let hash = hasher.finalize().map { String(format: "%02hhx", $0) }.joined()
+//            DispatchQueue.main.async {
+//                self.cdExhibit?.localChecksum = hash
+//                self.cdExhibit?.localChecksumType = "SHA_256"
+//                cdSaveContext()
+//                worker.add(.updateExhibit, target: self.id, account: job.account)
+//                worker.complete(job)
+//                logft4(level: .custody_minor, category: .change, initiator: job.account?.id, action: LogAction.verify.rawValue, subaction: "file_hashed", target: self.id, targetType: "exhibit", details: ["type":"sha256", "hash":hash])
+//            }
         }
     }
     
@@ -512,17 +523,17 @@ class Exhibit: NSObject {
                 self.cdExhibit?.gpsArea4         = p.administrativeArea
                 self.cdExhibit?.gpsCountry       = p.country
                 cdSaveContext()
-
-                worker.add(.setEvent, target: self.id, account: job.account)
-                NotificationCenter.default.post(name: .didChangeExhibit, object: self)
-                worker.complete(job)
+                #warning("Cannot find 'worker' in scope")
+//                worker.add(.setEvent, target: self.id, account: job.account)
+//                NotificationCenter.default.post(name: .didChangeExhibit, object: self)
+//                worker.complete(job)
             } else {
-                if (error as! CLError).code == .network {
-                    worker.postpone(job, because: error!.localizedDescription)
-                } else {
-                    worker.add(.setEvent, target: self.id, account: job.account)
-                    worker.complete(job)
-                }
+//                if (error as! CLError).code == .network {
+//                    worker.postpone(job, because: error!.localizedDescription)
+//                } else {
+//                    worker.add(.setEvent, target: self.id, account: job.account)
+//                    worker.complete(job)
+//                }
             }
         }
         Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(lookUpAddressTimeout), userInfo: ["job":job], repeats: false)
@@ -531,91 +542,101 @@ class Exhibit: NSObject {
     @objc private func lookUpAddressTimeout(timer: Timer) {
         if !geocoder.isGeocoding { return }
         if let job = (timer.userInfo as? [String:Any])?["job"] as? Job {
-            worker.fail(job, error: "Timed out")
+            #warning("Cannot find 'worker' in scope")
+//            worker.fail(job, error: "Timed out")
         }
         geocoder.cancelGeocode()
     }
 
     var readyForCreateExhibit: String? {
-        if !serverAvailable { return "Server unavailable" }
+        #warning("Cannot find 'serverAvailable' in scope")
+        //if !serverAvailable { return "Server unavailable" }
         return nil
     }
     
     func createExhibit(job: Job) {
-        if let taskFieldId = cdExhibit?.taskFieldId {
-            AppState.shared.server.createExhibit(account: job.account, exhibit: self, taskFieldId: taskFieldId) { response in
-                self.cdExhibit!.uploadKey = response.uploadKey
-                worker.complete(job)
-            } failure: { response in
-                worker.postpone(job, because: response.error)
-            }
-        } else {
-            worker.fail(job, error: "Not connected to a taskfield")
-        }
+        #warning("Cannot find 'worker' in scope")
+//        if let taskFieldId = cdExhibit?.taskFieldId {
+//            AppState.shared.server.createExhibit(account: job.account, exhibit: self, taskFieldId: taskFieldId) { response in
+//                self.cdExhibit!.uploadKey = response.uploadKey
+//                worker.complete(job)
+//            } failure: { response in
+//                worker.postpone(job, because: response.error)
+//            }
+//        } else {
+//            worker.fail(job, error: "Not connected to a taskfield")
+//        }
     }
 
     var readyForSetEvent: String? {
-        if !serverAvailable                 { return "Server unavailable" }
-        if worker.status(onJob: .createExhibit, forTarget: id) != .none { return "Exhibit isn't on server yet" }
+        #warning("Cannot find 'worker' in scope")
+//        if !serverAvailable                 { return "Server unavailable" }
+//        if worker.status(onJob: .createExhibit, forTarget: id) != .none { return "Exhibit isn't on server yet" }
         return nil
     }
     
     func setEvent(job: Job) {
-        AppState.shared.server.setEvent(account: job.account, exhibit: self) { response in
-            if response.statusCode >= 200 && response.statusCode < 300 {
-                worker.complete(job)
-            } else {
-                if let body = String(data: response.body, encoding: .utf8) {
-                    worker.fail(job, error: body)
-                }
-            }
-        }
+        #warning("Cannot find 'worker' in scope")
+//        AppState.shared.server.setEvent(account: job.account, exhibit: self) { response in
+//            if response.statusCode >= 200 && response.statusCode < 300 {
+//                worker.complete(job)
+//            } else {
+//                if let body = String(data: response.body, encoding: .utf8) {
+//                    worker.fail(job, error: body)
+//                }
+//            }
+//        }
     }
     
     var readyForUpdateExhibit: String? {
-        if !serverAvailable                 { return "Server unavailable" }
-        if worker.status(onJob: .createExhibit, forTarget: id) != .none { return "Exhibit isn't on server yet" }
+        #warning("Cannot find 'worker' in scope")
+//        if !serverAvailable                 { return "Server unavailable" }
+//        if worker.status(onJob: .createExhibit, forTarget: id) != .none { return "Exhibit isn't on server yet" }
         return nil
     }
     
     func updateExhibit(job: Job) {
-        AppState.shared.server.updateExhibit(account: job.account, exhibit: self) { response in
-            if response.statusCode >= 200 && response.statusCode < 300 {
-                worker.complete(job)
-            } else {
-                if let body = String(data: response.body, encoding: .utf8) {
-                    worker.fail(job, error: body)
-                }
-            }
-        }
+        #warning("Cannot find 'worker' in scope")
+//        AppState.shared.server.updateExhibit(account: job.account, exhibit: self) { response in
+//            if response.statusCode >= 200 && response.statusCode < 300 {
+//                worker.complete(job)
+//            } else {
+//                if let body = String(data: response.body, encoding: .utf8) {
+//                    worker.fail(job, error: body)
+//                }
+//            }
+//        }
     }
     
     var readyForArchiveExhibit: String? {
-        if !serverAvailable                 { return "Server unavailable" }
-        if worker.status(onJob: .createExhibit, forTarget: id) != .none { return "Exhibit isn't on server yet" }
+        #warning("Cannot find 'worker' in scope")
+//        if !serverAvailable                 { return "Server unavailable" }
+//        if worker.status(onJob: .createExhibit, forTarget: id) != .none { return "Exhibit isn't on server yet" }
         return nil
     }
 
     func discardExhibit(job: Job) {
-        AppState.shared.server.discardExhibit(account: job.account, exhibit: self) { response in
-            worker.complete(job)
-        } failure: { response in
-            worker.fail(job, error: response.error)
-        }
+        #warning("Cannot find 'worker' in scope")
+//        AppState.shared.server.discardExhibit(account: job.account, exhibit: self) { response in
+//            worker.complete(job)
+//        } failure: { response in
+//            worker.fail(job, error: response.error)
+//        }
     }
     
     var readyForUploadExhibit: String? {
+        #warning("Cannot find 'serverAvailable, settings, worker' in scope")
         if uploadedAt != nil { return "Complete" }
-        if !serverAvailable  { return "Server unavailable" }
+        //if !serverAvailable  { return "Server unavailable" }
         if uploadKey==nil    { return "Exhibit doesn't have an uploadKey" }
 
-        if connectionType == .cellular && !settings.cellularUploadCurrent {
-            return "Cellular upload limit setting prevents upload"
-        }
-
-        if worker.jobs.filter({ $0.status == Worker.Status.running.rawValue && $0.type == Worker.JobType.uploadExhibit.rawValue}).count >= 3 {
-            return "Max number of parallel uploads reached"
-        }
+//        if connectionType == .cellular && !settings.cellularUploadCurrent {
+//            return "Cellular upload limit setting prevents upload"
+//        }
+//
+//        if worker.jobs.filter({ $0.status == Worker.Status.running.rawValue && $0.type == Worker.JobType.uploadExhibit.rawValue}).count >= 3 {
+//            return "Max number of parallel uploads reached"
+//        }
 
         return nil
     }
@@ -631,16 +652,16 @@ class Exhibit: NSObject {
                 self.uploadProgress = progress
                 console("Upload progress: \(String(format: "%.2f%", progress*100)) Exhibit: \(self.id)")
             }
-            
-            upload?.resultBlock = { [unowned self] in
-                self.uploadProgress = 1
-                self.cdExhibit!.uploadedAt = Date()
-                worker.complete(job)
-            }
-            
-            upload?.failureBlock = { error in
-                worker.fail(job, error: error)
-            }
+            #warning("Cannot find 'worker' in scope")
+//            upload?.resultBlock = { [unowned self] in
+//                self.uploadProgress = 1
+//                self.cdExhibit!.uploadedAt = Date()
+//                worker.complete(job)
+//            }
+//
+//            upload?.failureBlock = { error in
+//                worker.fail(job, error: error)
+//            }
         }
         upload?.resume()
     }
@@ -652,7 +673,8 @@ class Exhibit: NSObject {
             return "Complete"
         }
 //        if cdExhibit!.status == "safe_to_delete" { return "Complete" }
-        if !serverAvailable    { return "Server unavailable" }
+        #warning("Cannot find 'worker' in scope")
+//        if !serverAvailable    { return "Server unavailable" }
         return "Waiting for verification"
 //        if worker.status(onJob: .uploadExhibit, forTarget: id) != .none { return "Exhibit not uploaded" }
 //        return nil

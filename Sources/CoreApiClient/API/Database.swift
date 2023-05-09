@@ -39,13 +39,16 @@ struct UserDefaultsKey {
     static let updateToVersion          = "settings.capture.show.update_to_version"
 }
 
+@available(iOS 13.0, *)
 var accounts = [Account]()
 
+@available(iOS 13.0, *)
 var activeAccount:Account? {
     get { return accounts.first(where: { $0.id == UDStr(UserDefaultsKey.activeAccount) }) }
     set(v) { setUD(UserDefaultsKey.activeAccount, to: v?.id ?? "") }
 }
 
+@available(iOS 13.0, *)
 var activeTask:Task? {
     get { return activeAccount?.tasks.filter{ $0.id==UDStr(UserDefaultsKey.activeTask) }.first }
     set(v) { setUD(UserDefaultsKey.activeTask, to: v?.id ?? "") }
@@ -57,6 +60,7 @@ let cdContext: NSManagedObjectContext = {
     return container.viewContext
 }()
 
+@available(iOS 13.0, *)
 func loadLocalDB() {
     do {
         let cdAccounts = try cdContext.fetch(NSFetchRequest<CDAccount>(entityName: "CDAccount"))
@@ -80,7 +84,7 @@ func loadLocalDB() {
     }
 }
 
-
+@available(iOS 13.0, *)
 func deleteData(entity: String) {
     let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
     fetchRequest.returnsObjectsAsFaults = false
@@ -97,6 +101,8 @@ func deleteData(entity: String) {
 }
 
 var cdCalls = 0
+
+@available(iOS 13.0, *)
 func cdSaveContext() {
     DispatchQueue.main.async {
         cdCalls += 1

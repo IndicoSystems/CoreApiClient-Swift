@@ -7,6 +7,7 @@
 
 import Foundation
 
+@available(iOS 13.0, *)
 protocol Server {
     func getInfo(urlString: String, completion: @escaping (Result<ServerInfo, Error>) -> ())
     func signIn(useActiveDirectory: Bool, username: String, password: String, completion: @escaping (FT4Account)->(), failure: @escaping (FT4Error) -> ())

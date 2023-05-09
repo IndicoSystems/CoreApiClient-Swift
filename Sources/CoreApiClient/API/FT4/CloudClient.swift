@@ -8,6 +8,7 @@ enum AuthMode: String {
     case anonymous = "azure_ad_anonymous"
 }
 
+@available(iOS 13.0, *)
 class FT4Client {
     
     enum CloudClientError: LocalizedError {
@@ -17,20 +18,21 @@ class FT4Client {
         case noNetwork
         case invalidHost
         
-        var errorDescription: String? {
-            switch self {
-            case .invalidUrl:
-                return Loc.auth.noHostFound
-            case .noData:
-                return NSLocalizedString("No data in API response", comment: "")
-            case .invalidJSON:
-                return Loc.auth.invalidHost
-            case .invalidHost:
-                return Loc.auth.invalidHost
-            case .noNetwork:
-                return Loc.auth.noNetworkLogin
-            }
-        }
+        #warning("Cannot find 'Loc' in scope")
+//        var errorDescription: String? {
+//            switch self {
+//            case .invalidUrl:
+//                return Loc.auth.noHostFound
+//            case .noData:
+//                return NSLocalizedString("No data in API response", comment: "")
+//            case .invalidJSON:
+//                return Loc.auth.invalidHost
+//            case .invalidHost:
+//                return Loc.auth.invalidHost
+//            case .noNetwork:
+//                return Loc.auth.noNetworkLogin
+//            }
+//        }
     }
     
     enum HTTPMethod: String {
@@ -148,6 +150,7 @@ class FT4Client {
     var firstGetTasks = true
 }
 
+@available(iOS 13.0, *)
 extension FT4Client: Server {
     
     func getInfo(urlString: String, completion: @escaping (Result<ServerInfo, Error>) -> ()) {
@@ -190,15 +193,16 @@ extension FT4Client: Server {
                         }
                     }
                     
-                    if UserDefaults.standard.object(forKey: UserDefaultsKey.cellularUploadCurrent) == nil || !settings.cellularUploadShow {
-                        let valueToSet = UDStr(UserDefaultsKey.cellularUpload)
-                        setUD(UserDefaultsKey.cellularUploadCurrent, to: valueToSet)
-                    }
-                    
-                    if UserDefaults.standard.object(forKey: UserDefaultsKey.autoLockCurrent) == nil || !settings.autoLockShow {
-                        let valueToSet = UDStr(UserDefaultsKey.autoLock)
-                        setUD(UserDefaultsKey.autoLockCurrent, to: valueToSet)
-                    }
+                    #warning("Cannot find 'settings' in scope")
+//                    if UserDefaults.standard.object(forKey: UserDefaultsKey.cellularUploadCurrent) == nil || !settings.cellularUploadShow {
+//                        let valueToSet = UDStr(UserDefaultsKey.cellularUpload)
+//                        setUD(UserDefaultsKey.cellularUploadCurrent, to: valueToSet)
+//                    }
+//
+//                    if UserDefaults.standard.object(forKey: UserDefaultsKey.autoLockCurrent) == nil || !settings.autoLockShow {
+//                        let valueToSet = UDStr(UserDefaultsKey.autoLock)
+//                        setUD(UserDefaultsKey.autoLockCurrent, to: valueToSet)
+//                    }
                 
                     completion(.success(serverInfo))
                 } catch {
@@ -346,7 +350,8 @@ extension FT4Client: Server {
                     }
                     
                     completion(account)
-                    worker.resetJobs(hard: true)
+                    #warning("Cannot find 'worker' in scope")
+//                    worker.resetJobs(hard: true)
                 }
             case .failure(let err):
                 let error = FT4Error(error: err.localizedDescription)
@@ -393,7 +398,8 @@ extension FT4Client: Server {
                     }
                     
                     completion(account)
-                    worker.resetJobs(hard: true)
+                    #warning("Cannot find 'worker' in scope")
+//                    worker.resetJobs(hard: true)
                 }
             case .failure(let err):
                 let error = FT4Error(error: err.localizedDescription)

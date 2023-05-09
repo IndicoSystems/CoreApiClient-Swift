@@ -1,5 +1,6 @@
 import Foundation
 
+@available(iOS 13.0, *)
 class Upload: NSObject {
     var progressBlock: ((Float) -> ())?
     var resultBlock: (() -> ())?
@@ -22,6 +23,7 @@ class Upload: NSObject {
     }
 }
 
+@available(iOS 13.0, *)
 class FT4Upload: Upload, URLSessionTaskDelegate, URLSessionDataDelegate {
     let pre = "Indico-Upload-"
     var uploadSession: URLSession?

@@ -19,11 +19,26 @@ enum ConnectionType {
 
 var connectionType = ConnectionType.none
 
+func console(_ t: Any?) {
+    print(t ?? "null")
+}
+
 func UDInt(_ name: String) -> Int { return UserDefaults.standard.integer(forKey: name) }
 func UDStr(_ name: String) -> String { return UserDefaults.standard.string(forKey: name) ?? "" }
 func UDBool(_ name: String) -> Bool { return UserDefaults.standard.bool(forKey: name) }
 
 func setUD(_ name: String, to: Any?) { UserDefaults.standard.set(to, forKey: name) }
+
+var currentLanguage:String = "en"
+
+func formatDate(_ date: Date, dateStyle: DateFormatter.Style, timeStyle: DateFormatter.Style) -> String {
+    let dF = DateFormatter()
+    dF.dateStyle = dateStyle
+    dF.timeStyle = timeStyle
+    let l = Locale.preferredLanguages[0].starts(with: "\(currentLanguage)-") ? Locale.preferredLanguages[0] : currentLanguage
+    dF.locale = Locale(identifier: l)
+    return dF.string(from: date)
+}
 
 func toByteArray<T>(_ value: T) -> [UInt8] {
     var value = value
@@ -34,6 +49,12 @@ let sampleRate = 44100
 var videoFileExt = "mp4"
 
 let fileMgr = FileManager.default
+
+let homeURL = fileMgr.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!.appendingPathComponent("files")
+let cacheURL = fileMgr.urls(for: .cachesDirectory, in: .userDomainMask).first!.appendingPathComponent("files")
+var freeSpace: Int { return Int((try? URL(fileURLWithPath: NSHomeDirectory()).resourceValues(forKeys: [.volumeAvailableCapacityForImportantUsageKey]))?.volumeAvailableCapacityForImportantUsage ?? 0) }
+#warning("Cannot find 'Settings' in scope")
+//var safeSpace: Int { return max(0,freeSpace - Settings.shared.minimumFreeMB) }
 
 func getTranslation(dict: Translation?) -> String {
     guard let dict=dict else { return "" }

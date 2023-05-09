@@ -30,6 +30,7 @@ enum MetaShape: String {
     case arrow
 }
 
+@available(iOS 13.0, *)
 class Meta {
     var cdMeta: CDMeta?
 

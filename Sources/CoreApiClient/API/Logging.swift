@@ -15,6 +15,7 @@ enum LogAction: String {
     case upload, verify, delete, download
 }
 
+@available(iOS 13.0, *)
 func logft4(level: LogLevel, category: LogCategory, initiator: String? = activeAccount?.id, action: String, subaction: String? = nil, target: String? = nil, targetType: String? = nil, inTarget: String? = nil, inTargetType: String? = nil, details: [String:String]? = nil) {
     console("Log (\(level.rawValue) - \(category.rawValue)): \(action) - \(subaction ?? "")")
     
@@ -41,6 +42,7 @@ func logft4(level: LogLevel, category: LogCategory, initiator: String? = activeA
     }
 }
 
+@available(iOS 13.0, *)
 func logSubmit() {
     guard connectionType != .none, !isSubmitting, !UDStr(UserDefaultsKey.host).isEmpty else { return }
     
@@ -82,11 +84,12 @@ func logSubmit() {
     }.resume()
 }
 
+#warning("Cannot find 'settings' in scope")
 func logCommon() -> [String:String] {
     [
         "app_version": "\(Bundle.main.infoDictionary?["CFBundleShortVersionString"] ?? "?") (\(Bundle.main.infoDictionary?["CFBundleVersion"] ?? "?"))",
-        "device_model": settings.getDeviceModel(),
-        "device_info": settings.getDeviceInfo()
+//        "device_model": settings.getDeviceModel(),
+//        "device_info": settings.getDeviceInfo()
     ]
 }
 
