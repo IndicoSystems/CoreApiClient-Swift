@@ -81,7 +81,8 @@ public class Coder {
     }
     
     public static func decode<T: Codable>(_ str: String, printResult: Bool = false) throws -> T {
-        return try decode(Data(), printResult: printResult)
+        let data = str.data(using: .utf8)!
+        return try decode(data, printResult: printResult)
     }
     
     // MARK: - encode

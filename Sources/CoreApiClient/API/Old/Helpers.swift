@@ -86,13 +86,13 @@ func getDeviceModel() -> String {
 
 
 func getDeviceInfo() -> String {
-var space:Int64 = 0
-do {
-    let systemAttributes = try FileManager.default.attributesOfFileSystem(forPath: NSHomeDirectory() as String)
-    space = (systemAttributes[.systemSize] as? NSNumber)?.int64Value ?? 0
-} catch { }
-
-let deviceName = "\(Int(ceil(Double(space)/1_000_000_000))) GB, iOS \(ProcessInfo.processInfo.operatingSystemVersionString.replacingOccurrences(of: "Version ", with: "").replacingOccurrences(of: "Build ", with: ""))"
-
-return deviceName
+    var space:Int64 = 0
+    do {
+        let systemAttributes = try FileManager.default.attributesOfFileSystem(forPath: NSHomeDirectory() as String)
+        space = (systemAttributes[.systemSize] as? NSNumber)?.int64Value ?? 0
+    } catch { }
+    
+    let deviceName = "\(Int(ceil(Double(space)/1_000_000_000))) GB, iOS \(ProcessInfo.processInfo.operatingSystemVersionString.replacingOccurrences(of: "Version ", with: "").replacingOccurrences(of: "Build ", with: ""))"
+    
+    return deviceName
 }

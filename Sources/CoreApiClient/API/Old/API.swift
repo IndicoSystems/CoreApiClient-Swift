@@ -303,7 +303,7 @@ struct VerifyTokenInput: FT4Input {
 struct LogInput: Encodable {
     let time, source: String
     let category: String
-    let level: Int
+    let level: Int32
     let initiator, action: String?
     let subaction, target, targetType, inTarget: String?
     let inTargetType: String?

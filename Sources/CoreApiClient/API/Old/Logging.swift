@@ -3,17 +3,17 @@ import CoreData
 let maxLogSize = 5000
 var isSubmitting = false
 
-enum LogCategory:String { case info, read, change, error }
-
-enum LogLevel:Int { case users_minor=2, custody_major=4, custody_minor=5, tech_support=7, tech_coder=8, tech_debug=9 }
-
-enum LogAction: String {
-    case capturePhoto = "capture_photo"
-    case captureVideo = "capture_video"
-    case captureAudio = "capture_audio"
-    case captureFile = "capture_file"
-    case upload, verify, delete, download
-}
+//enum LogCategory:String { case info, read, change, error }
+//
+//enum LogLevel:Int { case users_minor=2, custody_major=4, custody_minor=5, tech_support=7, tech_coder=8, tech_debug=9 }
+//
+//enum LogAction: String {
+//    case capturePhoto = "capture_photo"
+//    case captureVideo = "capture_video"
+//    case captureAudio = "capture_audio"
+//    case captureFile = "capture_file"
+//    case upload, verify, delete, download
+//}
 
 @available(iOS 13.0, *)
 func logft4(level: LogLevel, category: LogCategory, initiator: String? = activeAccount?.id, action: String, subaction: String? = nil, target: String? = nil, targetType: String? = nil, inTarget: String? = nil, inTargetType: String? = nil, details: [String:String]? = nil) {
@@ -30,11 +30,11 @@ func logft4(level: LogLevel, category: LogCategory, initiator: String? = activeA
     DispatchQueue.main.async {
         let nextID = UDInt(UserDefaultsKey.logIDAutoIncrement) + 1
         setUD(UserDefaultsKey.logIDAutoIncrement, to: nextID)
-        let log = Log(context: cdContext)
+        let log = CDLog(context: cdContext)
         log.id = Int32(nextID)
         log.body = String(data: body, encoding: .utf8)
         
-        let fetchReq = NSFetchRequest<Log>(entityName: "Log")
+        let fetchReq = NSFetchRequest<CDLog>(entityName: "Log")
         fetchReq.predicate = NSPredicate(format: "id <= \(nextID-maxLogSize)")
         (try? cdContext.fetch(fetchReq))?.forEach { cdContext.delete($0) }
         cdSaveContext()
@@ -50,7 +50,7 @@ func logSubmit() {
     
     isSubmitting = true
     
-    let fetchReq = NSFetchRequest<Log>(entityName: "Log")
+    let fetchReq = NSFetchRequest<CDLog>(entityName: "Log")
     fetchReq.sortDescriptors = [NSSortDescriptor(key: "id", ascending: true)]
     fetchReq.predicate = NSPredicate(format: "isSynced == 0")
     fetchReq.fetchLimit = 50
@@ -94,7 +94,7 @@ func logCommon() -> [String:String] {
 }
 
 func createLogfile() -> URL? {
-    guard let log = try? cdContext.fetch(NSFetchRequest<Log>(entityName: "Log")).sorted(by: { $0.id > $1.id }) else { return nil }
+    guard let log = try? cdContext.fetch(NSFetchRequest<CDLog>(entityName: "Log")).sorted(by: { $0.id > $1.id }) else { return nil }
     let string = "[" + log.compactMap({$0.body}).joined(separator: ",") + "]"
     let data = string.data(using: .utf8)
     let fileURL = cacheURL.appendingPathComponent("log.json")

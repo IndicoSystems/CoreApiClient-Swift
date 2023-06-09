@@ -2,6 +2,7 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21754" systemVersion="22F66" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Access" representedClassName=".Access" syncable="YES" codeGenerationType="category">
         <attribute name="grantedAt" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="id" optional="YES" attributeType="String"/>
         <attribute name="permission" attributeType="String"/>
         <attribute name="what" attributeType="String"/>
         <attribute name="whoId" attributeType="String"/>
@@ -197,6 +198,23 @@
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>
+    <entity name="Log" representedClassName=".Log" syncable="YES" codeGenerationType="category">
+        <attribute name="action" attributeType="String"/>
+        <attribute name="actionId" attributeType="String"/>
+        <attribute name="category" attributeType="String"/>
+        <attribute name="details" attributeType="String"/>
+        <attribute name="id" attributeType="String"/>
+        <attribute name="initiator" attributeType="String"/>
+        <attribute name="inTargetId" attributeType="String"/>
+        <attribute name="inTargetType" attributeType="String"/>
+        <attribute name="isSynced" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="level" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="source" attributeType="String"/>
+        <attribute name="subaction" attributeType="String"/>
+        <attribute name="targetId" attributeType="String"/>
+        <attribute name="targetType" attributeType="String"/>
+        <attribute name="time" attributeType="Date" usesScalarValueType="NO"/>
+    </entity>
     <entity name="Task" representedClassName=".Task" parentEntity="Base" syncable="YES" codeGenerationType="category">
         <attribute name="completed" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="description_" attributeType="String"/>
@@ -234,7 +252,7 @@
         <attribute name="required" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="sequence" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="title" attributeType="String"/>
-        <attribute name="type" attributeType="Transformable" customClassName="TaskFieldType"/>
+        <attribute name="type" attributeType="String" customClassName="TaskFieldType2"/>
         <relationship name="exhibits" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Exhibit" inverseName="taskField" inverseEntity="Exhibit"/>
         <relationship name="task" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Task" inverseName="fields" inverseEntity="Task"/>
         <uniquenessConstraints>

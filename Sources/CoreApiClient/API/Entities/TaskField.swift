@@ -7,7 +7,7 @@
 
 import CoreData
 
-enum TaskFieldType: String, Codable {
+public enum TaskFieldType: String, Codable {
     case text, number, file, time, choice, layout, subtask
 }
 
@@ -19,6 +19,11 @@ public class ChoiceOption: Codable {
 
 public class TaskField: Base, Codable {
     
+    public var typeEnum: TaskFieldType {
+        get { return TaskFieldType(rawValue: self.type ?? TaskFieldType.text.rawValue) ?? .text }
+        set { self.type = newValue.rawValue }
+    }
+    
     private var featuresArr: [String]? = nil
     public var featuresArray: [String] {
         get {
@@ -28,9 +33,9 @@ public class TaskField: Base, Codable {
             
             return featuresArr ?? []
         }
-        set(value) {
-            features = value.joined(separator: ",")
-            featuresArr = value
+        set {
+            features = newValue.joined(separator: ",")
+            featuresArr = newValue
         }
     }
     
@@ -43,9 +48,9 @@ public class TaskField: Base, Codable {
             
             return optionsArr ?? []
         }
-        set(value) {
-            options = try? Coder.encode(value)
-            optionsArr = value
+        set {
+            options = try? Coder.encode(newValue)
+            optionsArr = newValue
         }
     }
     
@@ -76,6 +81,8 @@ public class TaskField: Base, Codable {
         
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
+        #warning("use the id and updatedAt to check for newer version")
+        
         self.answer = try container.decodeIfPresent(String.self, forKey: .answer)
         self.description_ = try container.decodeIfPresent(String.self, forKey: .description)
         self.entityField = try container.decodeIfPresent(String.self, forKey: .entityField)
@@ -90,7 +97,7 @@ public class TaskField: Base, Codable {
         self.required = try container.decode(Bool.self, forKey: .required)
         self.sequence = try container.decode(Int32.self, forKey: .sequence)
         self.title = try container.decodeIfPresent(String.self, forKey: .title)
-        self.type = try container.decodeIfPresent(TaskFieldType.self, forKey: .type)
+        self.type = try container.decodeIfPresent(String.self, forKey: .type)
     }
 
     public func encode(to encoder: Encoder) throws {
@@ -113,6 +120,5 @@ public class TaskField: Base, Codable {
         try container.encode(self.sequence, forKey: .sequence)
         try container.encode(self.title, forKey: .title)
         try container.encode(self.type, forKey: .type)
-        
     }
 }
