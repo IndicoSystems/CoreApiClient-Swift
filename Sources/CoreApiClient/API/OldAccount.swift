@@ -2,9 +2,9 @@ import UIKit
 import CoreData
 
 @available(iOS 13.0, *)
-class Account {
+class OldAccount {
     var cdAccount: CDAccount?
-    var tasks = [Task]()
+    var tasks = [OldTask]()
     var id: String { return cdAccount!.id! }
     
     var token: String? {
@@ -22,7 +22,7 @@ class Account {
         set(v) { cdAccount?.fullName = v; cdSaveContext() }
     }
     
-    func addTask(_ task: Task) {
+    func addTask(_ task: OldTask) {
         tasks.append(task)
         cdAccount?.addToTasks(task.cdTask!)
         cdSaveContext()
@@ -40,7 +40,7 @@ class Account {
         accounts.append(self)
     }
     
-    func deleteTask(_ task: Task) {
+    func deleteTask(_ task: OldTask) {
         #warning("Cannot find 'worker' in scope")
 //        task.exhibits.forEach { exhibit in
 //            if !worker.jobs(forIDs: [exhibit.id]).isEmpty { return }

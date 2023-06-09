@@ -5,10 +5,10 @@ import CryptoKit
 import Contacts
 
 @available(iOS 13.0, *)
-class Exhibit: NSObject {
+class OldExhibit: NSObject {
     
     var cdExhibit: CDExhibit?
-    var task: Task? { activeAccount?.tasks.first(where: { $0.id == cdExhibit?.task?.id }) }
+    var task: OldTask? { activeAccount?.tasks.first(where: { $0.id == cdExhibit?.task?.id }) }
 
     var id: String {
         cdExhibit!.id!
@@ -92,7 +92,7 @@ class Exhibit: NSObject {
 //        }
     }
 
-    init(inTask: Task, ofType: ExhibitType? = nil, fromCDExhibit: CDExhibit? = nil, ft4Task: FT4Task? = nil, inTaskField: String? = nil) {
+    init(inTask: OldTask, ofType: ExhibitType? = nil, fromCDExhibit: CDExhibit? = nil, ft4Task: FT4Task? = nil, inTaskField: String? = nil) {
         super.init()
         cdExhibit = fromCDExhibit
         
@@ -380,7 +380,7 @@ class Exhibit: NSObject {
         return nil
     }
 
-    func finalizeExhibit(job: Job) {
+    func finalizeExhibit(job: CDJob) {
         let tmpExtension = [.video: videoFileExt, .audio: "caf"][type] ?? ""
         if type == .video {
             fileSize = Int((try? fileMgr.attributesOfItem(atPath: localURL.path+"."+tmpExtension))?[.size] as? UInt64 ?? 0)
@@ -477,7 +477,7 @@ class Exhibit: NSObject {
         return nil
     }
 
-    func createChecksum(job: Job) {
+    func createChecksum(job: CDJob) {
         DispatchQueue.global(qos: .background).async {
             #warning("Cannot find 'SHA256' in scope")
 //            var hasher = SHA256.init()
@@ -511,7 +511,7 @@ class Exhibit: NSObject {
     
     let geocoder = CLGeocoder()
     
-    func lookUpAddress(job: Job) {
+    func lookUpAddress(job: CDJob) {
         geocoder.reverseGeocodeLocation(CLLocation(latitude: location.latitude, longitude: location.longitude)) { placemark, error in
             if let p = placemark?.first, error == nil {
                 self.cdExhibit?.gpsFullAddress   = p.postalAddress==nil ?"":CNPostalAddressFormatter().string(from: p.postalAddress!)
@@ -541,7 +541,7 @@ class Exhibit: NSObject {
     
     @objc private func lookUpAddressTimeout(timer: Timer) {
         if !geocoder.isGeocoding { return }
-        if let job = (timer.userInfo as? [String:Any])?["job"] as? Job {
+        if let job = (timer.userInfo as? [String:Any])?["job"] as? CDJob {
             #warning("Cannot find 'worker' in scope")
 //            worker.fail(job, error: "Timed out")
         }
@@ -554,7 +554,7 @@ class Exhibit: NSObject {
         return nil
     }
     
-    func createExhibit(job: Job) {
+    func createExhibit(job: CDJob) {
         #warning("Cannot find 'worker' in scope")
 //        if let taskFieldId = cdExhibit?.taskFieldId {
 //            AppState.shared.server.createExhibit(account: job.account, exhibit: self, taskFieldId: taskFieldId) { response in
@@ -575,7 +575,7 @@ class Exhibit: NSObject {
         return nil
     }
     
-    func setEvent(job: Job) {
+    func setEvent(job: CDJob) {
         #warning("Cannot find 'worker' in scope")
 //        AppState.shared.server.setEvent(account: job.account, exhibit: self) { response in
 //            if response.statusCode >= 200 && response.statusCode < 300 {
@@ -595,7 +595,7 @@ class Exhibit: NSObject {
         return nil
     }
     
-    func updateExhibit(job: Job) {
+    func updateExhibit(job: CDJob) {
         #warning("Cannot find 'worker' in scope")
 //        AppState.shared.server.updateExhibit(account: job.account, exhibit: self) { response in
 //            if response.statusCode >= 200 && response.statusCode < 300 {
@@ -615,7 +615,7 @@ class Exhibit: NSObject {
         return nil
     }
 
-    func discardExhibit(job: Job) {
+    func discardExhibit(job: CDJob) {
         #warning("Cannot find 'worker' in scope")
 //        AppState.shared.server.discardExhibit(account: job.account, exhibit: self) { response in
 //            worker.complete(job)
@@ -644,7 +644,7 @@ class Exhibit: NSObject {
     var upload: Upload?
     var uploadProgress:Float = 0
 
-    func uploadExhibit(job: Job) {
+    func uploadExhibit(job: CDJob) {
         if upload == nil {
             upload = FT4Upload(account: job.account, exhibit: self)
             
@@ -680,6 +680,6 @@ class Exhibit: NSObject {
 //        return nil
     }
     
-    func verifyExhibit(job: Job) {
+    func verifyExhibit(job: CDJob) {
     }
 }

@@ -1,11 +1,45 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21513" systemVersion="22C65" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21754" systemVersion="22F66" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Access" representedClassName=".Access" syncable="YES" codeGenerationType="category">
+        <attribute name="grantedAt" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="permission" attributeType="String"/>
+        <attribute name="what" attributeType="String"/>
+        <attribute name="whoId" attributeType="String"/>
+        <attribute name="whoName" attributeType="String"/>
+        <relationship name="task" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Task" inverseName="access" inverseEntity="Task"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="id"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="Account" representedClassName=".Account" parentEntity="Base" syncable="YES" codeGenerationType="category">
+        <attribute name="accessToken" attributeType="String"/>
+        <attribute name="id" attributeType="String"/>
+        <attribute name="name" attributeType="String"/>
+        <attribute name="privileges" attributeType="String"/>
+        <attribute name="username" attributeType="String"/>
+        <relationship name="jobs" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Job" inverseName="account" inverseEntity="Job"/>
+        <relationship name="tasks" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Task" inverseName="account" inverseEntity="Task"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="id"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="Base" representedClassName=".Base" isAbstract="YES" syncable="YES" codeGenerationType="class">
+        <attribute name="createdAt" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="discarded" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="indexed" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="updatedAt" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="verified" attributeType="Boolean" usesScalarValueType="YES"/>
+    </entity>
     <entity name="CDAccount" representedClassName="CDAccount" syncable="YES" codeGenerationType="class">
         <attribute name="fullName" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="String"/>
         <attribute name="token" optional="YES" attributeType="String"/>
         <attribute name="userName" optional="YES" attributeType="String"/>
-        <relationship name="jobs" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Job" inverseName="account" inverseEntity="Job"/>
+        <relationship name="jobs" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDJob" inverseName="account" inverseEntity="CDJob"/>
         <relationship name="tasks" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDTask" inverseName="account" inverseEntity="CDTask"/>
     </entity>
     <entity name="CDExhibit" representedClassName="CDExhibit" syncable="YES" codeGenerationType="class">
@@ -40,6 +74,19 @@
         <relationship name="metas" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDMeta" inverseName="exhibit" inverseEntity="CDMeta"/>
         <relationship name="task" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDTask" inverseName="exhibits" inverseEntity="CDTask"/>
     </entity>
+    <entity name="CDJob" representedClassName=".CDJob" syncable="YES" codeGenerationType="class">
+        <attribute name="error" optional="YES" attributeType="String"/>
+        <attribute name="status" optional="YES" attributeType="String"/>
+        <attribute name="target" optional="YES" attributeType="String"/>
+        <attribute name="time" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="type" optional="YES" attributeType="String"/>
+        <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDAccount" inverseName="jobs" inverseEntity="CDAccount"/>
+    </entity>
+    <entity name="CDLog" representedClassName=".CDLog" syncable="YES" codeGenerationType="class">
+        <attribute name="body" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="isSynced" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+    </entity>
     <entity name="CDMeta" representedClassName="CDMeta" syncable="YES" codeGenerationType="class">
         <attribute name="angle" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="censor" optional="YES" attributeType="String"/>
@@ -72,17 +119,128 @@
         <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDAccount" inverseName="tasks" inverseEntity="CDAccount"/>
         <relationship name="exhibits" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDExhibit" inverseName="task" inverseEntity="CDExhibit"/>
     </entity>
-    <entity name="Job" representedClassName=".Job" syncable="YES" codeGenerationType="class">
-        <attribute name="error" optional="YES" attributeType="String"/>
-        <attribute name="status" optional="YES" attributeType="String"/>
-        <attribute name="target" optional="YES" attributeType="String"/>
-        <attribute name="time" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="type" optional="YES" attributeType="String"/>
-        <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDAccount" inverseName="jobs" inverseEntity="CDAccount"/>
+    <entity name="Event" representedClassName=".Event" parentEntity="Base" syncable="YES" codeGenerationType="category">
+        <attribute name="confidence" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="entity_" attributeType="String"/>
+        <attribute name="entityId" attributeType="String"/>
+        <attribute name="fromTime" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="id" attributeType="String"/>
+        <attribute name="language" attributeType="String"/>
+        <attribute name="source" attributeType="String"/>
+        <attribute name="subtype" attributeType="String"/>
+        <attribute name="text" attributeType="String"/>
+        <attribute name="toTime" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="type" attributeType="String"/>
+        <relationship name="exhibit" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Exhibit" inverseName="events" inverseEntity="Exhibit"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="id"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
     </entity>
-    <entity name="Log" representedClassName=".Log" syncable="YES" codeGenerationType="class">
-        <attribute name="body" optional="YES" attributeType="String"/>
-        <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="isSynced" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+    <entity name="Exhibit" representedClassName=".Exhibit" parentEntity="Base" syncable="YES" codeGenerationType="category">
+        <attribute name="archived" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="clientChecksum" attributeType="String"/>
+        <attribute name="duration" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="fileName" attributeType="String"/>
+        <attribute name="fileSize" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="id" attributeType="String"/>
+        <attribute name="mediaType" attributeType="String"/>
+        <attribute name="recognizedText" attributeType="String"/>
+        <attribute name="startedAt" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="status" attributeType="String"/>
+        <attribute name="thumbnail" attributeType="String"/>
+        <attribute name="type" attributeType="String"/>
+        <attribute name="uploadKey" attributeType="String"/>
+        <relationship name="events" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Event" inverseName="exhibit" inverseEntity="Event"/>
+        <relationship name="location" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Location"/>
+        <relationship name="taskField" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TaskField" inverseName="exhibits" inverseEntity="TaskField"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="id"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="Job" representedClassName=".Job" syncable="YES" codeGenerationType="category">
+        <attribute name="error" attributeType="String"/>
+        <attribute name="id" attributeType="String"/>
+        <attribute name="status" attributeType="String"/>
+        <attribute name="targetId" attributeType="String"/>
+        <attribute name="targetType" attributeType="String"/>
+        <attribute name="time" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="type" attributeType="String"/>
+        <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="jobs" inverseEntity="Account"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="id"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="Location" representedClassName=".Location" parentEntity="Base" syncable="YES" codeGenerationType="category">
+        <attribute name="alias" attributeType="String"/>
+        <attribute name="altitude" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="city" attributeType="String"/>
+        <attribute name="complement" attributeType="String"/>
+        <attribute name="country" attributeType="String"/>
+        <attribute name="district" attributeType="String"/>
+        <attribute name="horizontalAccuracy" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="id" attributeType="String"/>
+        <attribute name="latitude" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="longitude" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="postalCode" attributeType="String"/>
+        <attribute name="region" attributeType="String"/>
+        <attribute name="streetAddress" attributeType="String"/>
+        <attribute name="verticalAccuracy" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="id"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="Task" representedClassName=".Task" parentEntity="Base" syncable="YES" codeGenerationType="category">
+        <attribute name="completed" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="description_" attributeType="String"/>
+        <attribute name="entity_" attributeType="String"/>
+        <attribute name="entityId" attributeType="String"/>
+        <attribute name="formSubmitted" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="hidden" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="id" attributeType="String"/>
+        <attribute name="name" attributeType="String"/>
+        <attribute name="retention" attributeType="String"/>
+        <attribute name="template" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="title" attributeType="String"/>
+        <attribute name="titleTemplate" attributeType="String"/>
+        <attribute name="type" attributeType="String"/>
+        <attribute name="userSubmitted" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="access" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Access" inverseName="task" inverseEntity="Access"/>
+        <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="tasks" inverseEntity="Account"/>
+        <relationship name="fields" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TaskField" inverseName="task" inverseEntity="TaskField"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="id"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="TaskField" representedClassName=".TaskField" parentEntity="Base" syncable="YES" codeGenerationType="category">
+        <attribute name="answer" attributeType="String"/>
+        <attribute name="description_" attributeType="String"/>
+        <attribute name="entityField" attributeType="String"/>
+        <attribute name="features" attributeType="String"/>
+        <attribute name="id" attributeType="String"/>
+        <attribute name="max" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="min" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="options" attributeType="String"/>
+        <attribute name="placeholder" attributeType="String"/>
+        <attribute name="required" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="sequence" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="title" attributeType="String"/>
+        <attribute name="type" attributeType="Transformable" customClassName="TaskFieldType"/>
+        <relationship name="exhibits" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Exhibit" inverseName="taskField" inverseEntity="Exhibit"/>
+        <relationship name="task" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Task" inverseName="fields" inverseEntity="Task"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="id"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
     </entity>
 </model>

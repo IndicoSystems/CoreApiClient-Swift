@@ -6,12 +6,12 @@ class Upload: NSObject {
     var resultBlock: (() -> ())?
     var failureBlock: ((String) -> ())?
     
-    let exhibit: Exhibit
+    let exhibit: OldExhibit
     let account: CDAccount?
     
     var offset = -1
     
-    init(account: CDAccount?, exhibit: Exhibit) {
+    init(account: CDAccount?, exhibit: OldExhibit) {
         self.account = account
         self.exhibit = exhibit
     }
@@ -31,7 +31,7 @@ class FT4Upload: Upload, URLSessionTaskDelegate, URLSessionDataDelegate {
     var lastProgressTime:Double = 0
     
     
-    override init(account: CDAccount?, exhibit: Exhibit) {
+    override init(account: CDAccount?, exhibit: OldExhibit) {
         super.init(account: account, exhibit: exhibit)
         
         uploadSession = URLSession(configuration: .default, delegate: self, delegateQueue: .main)

@@ -410,7 +410,7 @@ extension FT4Client: Server {
     
     func setAccount(from account: FT4Account) {
         if activeAccount == nil {
-            let acc = Account()
+            let acc = OldAccount()
             acc.token = account.accessToken
             acc.cdAccount!.id = account.id
             acc.fullName = account.fullName
@@ -501,7 +501,7 @@ extension FT4Client: Server {
         }
     }
     
-    func createExhibit(account: CDAccount?, exhibit: Exhibit, taskFieldId: String, completion: @escaping (CreateExhibitResponse)->(), failure: @escaping (FT4Error)->()) {
+    func createExhibit(account: CDAccount?, exhibit: OldExhibit, taskFieldId: String, completion: @escaping (CreateExhibitResponse)->(), failure: @escaping (FT4Error)->()) {
         
         let input = CreateExhibitInput(exhibitId: exhibit.id,
                                        taskfieldId: taskFieldId,
@@ -537,7 +537,7 @@ extension FT4Client: Server {
         }
     }
     
-    func setEvent(account: CDAccount?, exhibit: Exhibit, completion: @escaping (FT4Response)->()) {
+    func setEvent(account: CDAccount?, exhibit: OldExhibit, completion: @escaping (FT4Response)->()) {
         // TODO: - Needs checksum and location
         
         let latitude = exhibit.cdExhibit?.gpsLatitude
@@ -558,7 +558,7 @@ extension FT4Client: Server {
         }
     }
     
-    func updateExhibit(account: CDAccount?, exhibit: Exhibit, completion: @escaping (FT4Response)->()) {
+    func updateExhibit(account: CDAccount?, exhibit: OldExhibit, completion: @escaping (FT4Response)->()) {
         // TODO: - Needs checksum and location
         
         let input = UpdateExhibitInput(exhibitId: exhibit.id,
@@ -579,7 +579,7 @@ extension FT4Client: Server {
         }
     }
     
-    func discardExhibit(account: CDAccount?, exhibit: Exhibit, completion: @escaping (Int) -> (), failure: @escaping (FT4Error)->()) {
+    func discardExhibit(account: CDAccount?, exhibit: OldExhibit, completion: @escaping (Int) -> (), failure: @escaping (FT4Error)->()) {
         
         let json: [String: Any] = ["action" : "discard_exhibit", "exhibit_id" : exhibit.id]
         let data = try! JSONSerialization.data(withJSONObject: json, options: .fragmentsAllowed)
@@ -600,7 +600,7 @@ extension FT4Client: Server {
         }
     }
     
-    func getExhibitStatus(exhibits: [Exhibit], completion: @escaping (FT4Response)->()) {
+    func getExhibitStatus(exhibits: [OldExhibit], completion: @escaping (FT4Response)->()) {
         
         let ids = exhibits.map({$0.id})
         
@@ -618,7 +618,7 @@ extension FT4Client: Server {
         }
     }
     
-    func submitTask(account: CDAccount?, task: Task, completion: @escaping (FT4Response)->(), failure: @escaping (FT4Error) -> ()) {
+    func submitTask(account: CDAccount?, task: OldTask, completion: @escaping (FT4Response)->(), failure: @escaping (FT4Error) -> ()) {
         
         let form = task.form!.withoutExhibits()
         

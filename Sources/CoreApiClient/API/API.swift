@@ -30,7 +30,7 @@ struct ServerVersion: Codable {
 struct FT4Task: Codable {
     var id: String
     var templateId: String?
-    var access: [Access]?
+    var access: [OldAccess]?
     var template: Bool
     var completed: Bool
     let hidden: Bool
@@ -65,7 +65,7 @@ struct FT4Task: Codable {
     }
 }
 
-struct Access: Codable {
+struct OldAccess: Codable {
     let grantedAt: String
     let whoId: String?
     let whoName: String?
@@ -139,17 +139,17 @@ struct FT4TaskField: Codable {
     var options: [ChoiceOption]?
 }
 
-enum TaskFieldType: String, Codable {
-    case text, number, file, time, choice, layout, subtask
-}
+//enum TaskFieldType: String, Codable {
+//    case text, number, file, time, choice, layout, subtask
+//}
 
-class ChoiceOption: Codable {
-    let title: Translation?
-    let value: String
-    var answer: Bool
-    
-    
-}
+//class ChoiceOption: Codable {
+//    let title: Translation?
+//    let value: String
+//    var answer: Bool
+//    
+//    
+//}
 
 // MARK: - Exhibit
 

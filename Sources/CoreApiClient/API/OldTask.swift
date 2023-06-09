@@ -1,8 +1,8 @@
 import CoreLocation
 
 @available(iOS 13.0, *)
-class Task {
-    init(inAccount: Account, withForm: FT4Task? = nil, fromCDTask: CDTask? = nil) {
+class OldTask {
+    init(inAccount: OldAccount, withForm: FT4Task? = nil, fromCDTask: CDTask? = nil) {
         cdTask = fromCDTask
         if cdTask==nil {
             cdTask = CDTask(context: cdContext)
@@ -79,7 +79,7 @@ class Task {
     var countVideo: Int { exhibits.filter({$0.type == .video && !$0.archived}).count }
     var countAudio: Int { exhibits.filter({$0.type == .audio && !$0.archived}).count }
     
-    var exhibits = [Exhibit]()
+    var exhibits = [OldExhibit]()
     
     static var suggestedTemplates: [FT4Task] {
         guard let activeAccount = activeAccount else { return [FT4Task]() }
@@ -110,8 +110,8 @@ class Task {
         }
     }
     
-    static var tasksAssignedToMe: [Task] {
-        guard let activeAccount = activeAccount else { return [Task]() }
+    static var tasksAssignedToMe: [OldTask] {
+        guard let activeAccount = activeAccount else { return [OldTask]() }
         
         let filteredTasks = activeAccount.tasks.filter({$0.form?.template == false})
         
@@ -125,8 +125,8 @@ class Task {
         }.sorted(by: {$0.changed > $1.changed})
     }
     
-    static var myTasks: [Task] {
-        guard let activeAccount = activeAccount else { return [Task]() }
+    static var myTasks: [OldTask] {
+        guard let activeAccount = activeAccount else { return [OldTask]() }
         
         let filteredTasks = activeAccount.tasks.filter({$0.form?.template == false})
         
@@ -140,8 +140,8 @@ class Task {
         }.sorted(by: {$0.changed > $1.changed})
     }
     
-    static var tasksDelegatedByMe: [Task] {
-        guard let activeAccount = activeAccount else { return [Task]() }
+    static var tasksDelegatedByMe: [OldTask] {
+        guard let activeAccount = activeAccount else { return [OldTask]() }
         
         let filteredTasks = activeAccount.tasks.filter({$0.form?.template == false})
         
@@ -155,7 +155,7 @@ class Task {
         }.sorted(by: {$0.changed > $1.changed})
     }
 
-    func addExhibit(_ exhibit: Exhibit) {
+    func addExhibit(_ exhibit: OldExhibit) {
         exhibits.append(exhibit)
         if let cdExhibit=exhibit.cdExhibit {
             cdTask?.addToExhibits(cdExhibit)
@@ -163,7 +163,7 @@ class Task {
         }
     }
     
-    func deleteExhibit(_ exhibit: Exhibit, reason: String) {
+    func deleteExhibit(_ exhibit: OldExhibit, reason: String) {
         if exhibit.isLocal {
             try? fileMgr.removeItem(at: exhibit.localURL)
             
@@ -191,7 +191,7 @@ class Task {
         return nil
     }
     
-    func submitTask(job: Job) {
+    func submitTask(job: CDJob) {
         var complete = cdTask?.userSubmitted != nil
         #warning("Cannot find 'hasIncompleteTasks, worker' in scope")
 //        if !hasIncompleteTasks {
@@ -220,8 +220,8 @@ class Task {
 }
 
 @available(iOS 13.0, *)
-extension Task: Hashable {
-    static func == (lhs: Task, rhs: Task) -> Bool {
+extension OldTask: Hashable {
+    static func == (lhs: OldTask, rhs: OldTask) -> Bool {
         return lhs.id == rhs.id
     }
     

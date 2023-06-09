@@ -133,7 +133,7 @@ class Meta {
         set(v) { cdMeta!.confidence = v; cdSaveContext() }
     }
     
-    init(inExhibit: Exhibit, fromCDMeta: CDMeta? = nil) {
+    init(inExhibit: OldExhibit, fromCDMeta: CDMeta? = nil) {
         cdMeta = fromCDMeta
         if cdMeta==nil {
             cdMeta = CDMeta(context: cdContext)

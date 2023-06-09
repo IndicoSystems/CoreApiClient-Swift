@@ -40,16 +40,16 @@ struct UserDefaultsKey {
 }
 
 @available(iOS 13.0, *)
-var accounts = [Account]()
+var accounts = [OldAccount]()
 
 @available(iOS 13.0, *)
-var activeAccount:Account? {
+var activeAccount:OldAccount? {
     get { return accounts.first(where: { $0.id == UDStr(UserDefaultsKey.activeAccount) }) }
     set(v) { setUD(UserDefaultsKey.activeAccount, to: v?.id ?? "") }
 }
 
 @available(iOS 13.0, *)
-var activeTask:Task? {
+var activeTask:OldTask? {
     get { return activeAccount?.tasks.filter{ $0.id==UDStr(UserDefaultsKey.activeTask) }.first }
     set(v) { setUD(UserDefaultsKey.activeTask, to: v?.id ?? "") }
 }
@@ -65,13 +65,13 @@ func loadLocalDB() {
     do {
         let cdAccounts = try cdContext.fetch(NSFetchRequest<CDAccount>(entityName: "CDAccount"))
         for cdAccount in cdAccounts {
-            let account = Account(fromCDAccount: cdAccount)
+            let account = OldAccount(fromCDAccount: cdAccount)
             let cdTasks = (cdAccount.tasks ?? NSSet()).allObjects as? [CDTask] ?? []
             for cdTask in cdTasks {
-                let task = Task(inAccount: account, fromCDTask: cdTask)
+                let task = OldTask(inAccount: account, fromCDTask: cdTask)
                 let cdExhibits = (cdTask.exhibits ?? NSSet()).allObjects as? [CDExhibit] ?? []
                 for cdExhibit in cdExhibits {
-                    let exhibit = Exhibit(inTask: task, fromCDExhibit: cdExhibit)
+                    let exhibit = OldExhibit(inTask: task, fromCDExhibit: cdExhibit)
                     let cdMetas = (cdExhibit.metas ?? NSSet()).allObjects as? [CDMeta] ?? []
                     for cdMeta in cdMetas {
                         _ = Meta(inExhibit: exhibit, fromCDMeta: cdMeta)
