@@ -20,7 +20,7 @@ public enum LogCategory: String { case info, read, change, error }
 public enum LogLevel: Int32 { case users_minor = 2, custody_major = 4, custody_minor = 5,
                                    tech_support = 7, tech_coder = 8, tech_debug = 9 }
 
-public class Log: NSManagedObject, Codable {
+public class Log: NSManagedObject, Codable, Identifiable {
     public var actionEnum: LogAction {
         get { return LogAction(rawValue: self.action ?? LogAction.capturePhoto.rawValue) ?? .capturePhoto }
         set { self.action = newValue.rawValue }
@@ -56,7 +56,7 @@ public class Log: NSManagedObject, Codable {
     }
     
     public required convenience init(from decoder: Decoder) throws {
-        self.init(context: cdContext)
+        self.init(context: moc)
         
         let container = try decoder.container(keyedBy: CodingKeys.self)
         

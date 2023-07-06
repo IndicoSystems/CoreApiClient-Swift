@@ -30,13 +30,13 @@ func logft4(level: LogLevel, category: LogCategory, initiator: String? = activeA
     DispatchQueue.main.async {
         let nextID = UDInt(UserDefaultsKey.logIDAutoIncrement) + 1
         setUD(UserDefaultsKey.logIDAutoIncrement, to: nextID)
-        let log = CDLog(context: cdContext)
+        let log = CDLog(context: moc)
         log.id = Int32(nextID)
         log.body = String(data: body, encoding: .utf8)
         
         let fetchReq = NSFetchRequest<CDLog>(entityName: "Log")
         fetchReq.predicate = NSPredicate(format: "id <= \(nextID-maxLogSize)")
-        (try? cdContext.fetch(fetchReq))?.forEach { cdContext.delete($0) }
+        (try? moc.fetch(fetchReq))?.forEach { moc.delete($0) }
         cdSaveContext()
         //print("Log size: \((try? cdContext.count(for: NSFetchRequest<NSFetchRequestResult>(entityName: "Log"))) ?? 0)")
     }
@@ -54,7 +54,7 @@ func logSubmit() {
     fetchReq.sortDescriptors = [NSSortDescriptor(key: "id", ascending: true)]
     fetchReq.predicate = NSPredicate(format: "isSynced == 0")
     fetchReq.fetchLimit = 50
-    guard let logs = try? cdContext.fetch(fetchReq), !logs.isEmpty else { isSubmitting = false; return }
+    guard let logs = try? moc.fetch(fetchReq), !logs.isEmpty else { isSubmitting = false; return }
     
     let body = "[" + logs.compactMap({$0.body}).joined(separator: ",") + "]"
     
@@ -94,7 +94,7 @@ func logCommon() -> [String:String] {
 }
 
 func createLogfile() -> URL? {
-    guard let log = try? cdContext.fetch(NSFetchRequest<CDLog>(entityName: "Log")).sorted(by: { $0.id > $1.id }) else { return nil }
+    guard let log = try? moc.fetch(NSFetchRequest<CDLog>(entityName: "Log")).sorted(by: { $0.id > $1.id }) else { return nil }
     let string = "[" + log.compactMap({$0.body}).joined(separator: ",") + "]"
     let data = string.data(using: .utf8)
     let fileURL = cacheURL.appendingPathComponent("log.json")

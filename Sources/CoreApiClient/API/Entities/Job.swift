@@ -20,7 +20,7 @@ public class Job: NSManagedObject, Codable {
     }
     
     public required convenience init(from decoder: Decoder) throws {
-        self.init(context: cdContext)
+        self.init(context: moc)
         
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
@@ -45,5 +45,26 @@ public class Job: NSManagedObject, Codable {
         try container.encode(self.targetType, forKey: .targetType)
         try container.encode(self.time, forKey: .time)
         try container.encode(self.type, forKey: .type)
+    }
+}
+
+
+public class TestEntity: NSManagedObject, Codable, Identifiable {
+    enum CodingKeys: CodingKey {
+        case name
+    }
+    
+    public required convenience init(from decoder: Decoder) throws {
+        self.init(context: moc)
+        
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        self.name = try container.decodeIfPresent(String.self, forKey: .name)
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        
+        try container.encode(self.name, forKey: .name)
     }
 }

@@ -1,6 +1,6 @@
 import CoreData
 
-struct UserDefaultsKey {
+public struct UserDefaultsKey {
     static let activeAccount            = "activeAccount"
     static let activeTask               = "activeTask"
     static let host                     = "host"
@@ -54,16 +54,11 @@ var activeTask:OldTask? {
     set(v) { setUD(UserDefaultsKey.activeTask, to: v?.id ?? "") }
 }
 
-let cdContext: NSManagedObjectContext = {
-    let container = NSPersistentContainer(name: "Evidence")
-    container.loadPersistentStores(completionHandler: { (storeDescription, error) in })
-    return container.viewContext
-}()
 
 @available(iOS 13.0, *)
 func loadLocalDB() {
     do {
-        let cdAccounts = try cdContext.fetch(NSFetchRequest<CDAccount>(entityName: "CDAccount"))
+        let cdAccounts = try moc.fetch(NSFetchRequest<CDAccount>(entityName: "CDAccount"))
         for cdAccount in cdAccounts {
             let account = OldAccount(fromCDAccount: cdAccount)
             let cdTasks = (cdAccount.tasks ?? NSSet()).allObjects as? [CDTask] ?? []
@@ -89,10 +84,10 @@ func deleteData(entity: String) {
     let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
     fetchRequest.returnsObjectsAsFaults = false
     do {
-        let results = try cdContext.fetch(fetchRequest)
+        let results = try moc.fetch(fetchRequest)
         for managedObject in results {
             if let managedObjectData: NSManagedObject = managedObject as? NSManagedObject {
-                cdContext.delete(managedObjectData)
+                moc.delete(managedObjectData)
             }
         }
     } catch {
@@ -115,6 +110,6 @@ func cdSaveContext() {
             return
         }
 
-        if cdContext.hasChanges { try? cdContext.save() }
+        if moc.hasChanges { try? moc.save() }
     }
 }

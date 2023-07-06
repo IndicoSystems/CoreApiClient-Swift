@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  Coder.swift
 //  
 //
 //  Created by Константин Ланин on 08.06.2023.
@@ -26,7 +26,7 @@ public class Coder {
     
     
     // MARK: - decode optional
-    public static func decodeOpt<T: Codable>(_ data: Data, printResult: Bool = false) -> T? {
+    public static func decodeOpt<T: Decodable>(_ data: Data, printResult: Bool = false) -> T? {
         var result: T? = nil
         
         do {
@@ -52,7 +52,7 @@ public class Coder {
     }
     
     // MARK: - decode
-    public static func decode<T: Codable>(_ data: Data, printResult: Bool = false) throws -> T {
+    public static func decode<T: Decodable>(_ data: Data, printResult: Bool = false) throws -> T {
         do {
             let result: T = try shared.jsonDecoder.decode(T.self, from: data)
             
@@ -80,13 +80,13 @@ public class Coder {
         }
     }
     
-    public static func decode<T: Codable>(_ str: String, printResult: Bool = false) throws -> T {
+    public static func decode<T: Decodable>(_ str: String, printResult: Bool = false) throws -> T {
         let data = str.data(using: .utf8)!
         return try decode(data, printResult: printResult)
     }
     
     // MARK: - encode
-    public static func encode<T: Codable>(_ data: T, printResult: Bool = false) throws -> String? {
+    public static func encode<T: Encodable>(_ data: T, printResult: Bool = false) throws -> String? {
         let data: Data = try encode(data)
         let str = String(data: data, encoding: .utf8)
         
@@ -96,7 +96,7 @@ public class Coder {
         
         return str
     }
-    public static func encode<T: Codable>(_ data: T) throws -> Data {
+    public static func encode<T: Encodable>(_ data: T) throws -> Data {
         return try shared.jsonEncoder.encode(data)
     }
 }

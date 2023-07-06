@@ -7,23 +7,6 @@
 
 import Foundation
 
-// MARK: - Server info
-
-struct ServerInfo: Codable {
-    let type: String?
-    let loginMethods: [String]
-    let settings: [String: String?]
-    let version: ServerVersion?
-}
-
-struct ServerVersion: Codable {
-    let major: Int
-    let minor: Int
-    
-    func asString() -> String {
-        String(format: "%03d.%03d", major, minor)
-    }
-}
 
 // MARK: - Task
 

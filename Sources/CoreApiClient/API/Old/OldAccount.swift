@@ -31,7 +31,7 @@ class OldAccount {
     init(fromCDAccount: CDAccount? = nil) {
         cdAccount = fromCDAccount
         if cdAccount==nil {
-            cdAccount = CDAccount(context: cdContext)
+            cdAccount = CDAccount(context: moc)
             cdAccount?.id = UUID().uuidString
             DispatchQueue.main.async {
                 cdSaveContext()
@@ -52,7 +52,7 @@ class OldAccount {
             task.deleteExhibit(exhibit, reason: "Task has been removed")
         }
         
-        cdContext.delete(task.cdTask!)
+        moc.delete(task.cdTask!)
         cdSaveContext()
         tasks.removeAll { $0 === task }
     }

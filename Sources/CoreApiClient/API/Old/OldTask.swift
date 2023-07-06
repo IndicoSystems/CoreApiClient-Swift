@@ -5,7 +5,7 @@ class OldTask {
     init(inAccount: OldAccount, withForm: FT4Task? = nil, fromCDTask: CDTask? = nil) {
         cdTask = fromCDTask
         if cdTask==nil {
-            cdTask = CDTask(context: cdContext)
+            cdTask = CDTask(context: moc)
             cdTask?.id = withForm?.id
             cdTask?.created = Date()
             cdTask?.changed = cdTask?.created
@@ -171,7 +171,7 @@ class OldTask {
             
             logft4(level: .custody_major, category: .change, initiator: account?.id ?? "", action: LogAction.delete.rawValue, subaction: "completed", target: exhibit.id, targetType: "exhibit", details: ["reason":reason])
         }
-        cdContext.delete(exhibit.cdExhibit!)
+        moc.delete(exhibit.cdExhibit!)
         cdSaveContext()
         exhibits.removeAll { $0 === exhibit}
     }

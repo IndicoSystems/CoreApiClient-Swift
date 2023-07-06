@@ -136,7 +136,7 @@ class Meta {
     init(inExhibit: OldExhibit, fromCDMeta: CDMeta? = nil) {
         cdMeta = fromCDMeta
         if cdMeta==nil {
-            cdMeta = CDMeta(context: cdContext)
+            cdMeta = CDMeta(context: moc)
         }
         
         if fromCDMeta != nil {

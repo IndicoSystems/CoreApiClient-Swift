@@ -28,7 +28,7 @@
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>
-    <entity name="Base" representedClassName=".Base" isAbstract="YES" syncable="YES" codeGenerationType="class">
+    <entity name="Base" representedClassName="Base" isAbstract="YES" syncable="YES" codeGenerationType="class">
         <attribute name="createdAt" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="discarded" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="indexed" attributeType="Boolean" usesScalarValueType="YES"/>
@@ -198,7 +198,7 @@
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>
-    <entity name="Log" representedClassName=".Log" syncable="YES" codeGenerationType="category">
+    <entity name="Log" representedClassName="Log" syncable="YES" codeGenerationType="category">
         <attribute name="action" attributeType="String"/>
         <attribute name="actionId" attributeType="String"/>
         <attribute name="category" attributeType="String"/>
@@ -260,5 +260,8 @@
                 <constraint value="id"/>
             </uniquenessConstraint>
         </uniquenessConstraints>
+    </entity>
+    <entity name="TestEntity" representedClassName=".TestEntity" syncable="YES" codeGenerationType="category">
+        <attribute name="name" optional="YES" attributeType="String"/>
     </entity>
 </model>

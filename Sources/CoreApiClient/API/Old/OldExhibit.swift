@@ -67,7 +67,7 @@ class OldExhibit: NSObject {
     
     var isLocal:  Bool { fileMgr.fileExists(atPath: localURL.path) }
     
-    let fileExtensions = [ExhibitType.photo:"jpeg", ExhibitType.video:videoFileExt, ExhibitType.audio:"mp4"]
+    let fileExtensions = [ExhibitType.photo: "jpeg", ExhibitType.video: videoFileExt, ExhibitType.audio: "mp4"]
     var localURL:  URL  { homeURL.appendingPathComponent("orig_\(id).\(fileExtensions[type] ?? "")") }
 
     var locationAccuracy: Double { cdExhibit!.gpsHorizontalAccuracy }
@@ -97,11 +97,11 @@ class OldExhibit: NSObject {
         cdExhibit = fromCDExhibit
         
         if let ft4Task = ft4Task {
-            cdExhibit = CDExhibit(context: cdContext)
+            cdExhibit = CDExhibit(context: moc)
             cdExhibit?.id = ft4Task.id
             if let type = ofType { cdExhibit?.type = type.rawValue }
         } else if cdExhibit==nil {
-            cdExhibit = CDExhibit(context: cdContext)
+            cdExhibit = CDExhibit(context: moc)
             cdExhibit?.id = UUID().uuidString
             if let type = ofType { cdExhibit?.type = type.rawValue }
             cdExhibit?.captureStartedAt = Date()
@@ -127,7 +127,7 @@ class OldExhibit: NSObject {
     }
     
     func deleteMeta(_ meta: Meta) {
-        cdContext.delete(meta.cdMeta!)
+        moc.delete(meta.cdMeta!)
         cdSaveContext()
         metas.removeAll { $0 === meta}
     }

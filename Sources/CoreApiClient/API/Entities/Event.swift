@@ -31,7 +31,7 @@ public class Event: Base, Codable {
     }
     
     public required convenience init(from decoder: Decoder) throws {
-        self.init(context: cdContext)
+        self.init(context: moc)
         
         let container = try decoder.container(keyedBy: CodingKeys.self)
         

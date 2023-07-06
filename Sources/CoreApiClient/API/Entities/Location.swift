@@ -37,7 +37,7 @@ public class Location: Base, Codable {
     }
     
     public required convenience init(from decoder: Decoder) throws {
-        self.init(context: cdContext)
+        self.init(context: moc)
         
         try self.decodeBase(from: decoder)
         
